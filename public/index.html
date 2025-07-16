@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WeatherWise</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🌦️ WeatherWise</h1>
+
+    <form id="weather-form">
+      <input type="text" id="city-input" placeholder="Enter city" />
+      <button type="submit">Check</button>
+    </form>
+
+    <div id="weather-result" class="box"></div>
+    <div id="suggestion" class="box"></div>
+    <img id="clothing-image" class="clothing-img" style="display:none;" />
+
+    <div id="forecast" class="forecast-section" style="display: none;">
+      <h2>📅 5-Day Forecast</h2>
+      <div id="forecast-list" class="forecast-list"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
