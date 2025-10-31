@@ -29,9 +29,47 @@ Built with **Express**, **Axios**, and **Dotenv**.
 ## 📂 Project Structure
 
 weatherwise/
-├── node_modules/
-├── package.json
-├── package-lock.json
-├── .env
-├── server.js
-└── README.md
+├── .vscode/
+│   └── settings.json       
+│
+├── node_modules/              
+│
+├── public/                    
+│   └── index.html              
+│
+├── .env                       
+│
+├── README.md                  
+│
+├── package-lock.json          
+│
+├── package.json               
+│
+└── server.js 
+
+
+---
+
+## ⚙️ Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/weatherwise.git
+   cd weatherwise
+
+2.**Install dependencies**
+
+npm install
+
+3.**Create a .env file**
+
+API_KEY=your_api_key_here
+PORT=3000
+
+4.**Run the server**
+
+node server.js
+
+5.**Open in browser**
+
+http://localhost:3000
