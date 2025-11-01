@@ -33,24 +33,43 @@ app.post('/api/weather', async (req, res) => {
       }
     });
 
-    const current = weatherRes.data.current_weather;
-    const hour = new Date().getHours();
-    const humidity = weatherRes.data.hourly.relative_humidity_2m[hour];
-    const rainProb = weatherRes.data.hourly.precipitation_probability[hour];
+    const daily = weatherRes.data.daily || {};
+    const dates = Array.isArray(daily.time) ? daily.time : [];
+    const maxTemps = Array.isArray(daily.temperature_2m_max) ? daily.temperature_2m_max : [];
+    const minTemps = Array.isArray(daily.temperature_2m_min) ? daily.temperature_2m_min : [];
+    const codes = Array.isArray(daily.weathercode) ? daily.weathercode : [];
 
-    const forecast = [];
-    const dates = weatherRes.data.daily.time;
-    const maxTemps = weatherRes.data.daily.temperature_2m_max;
-    const minTemps = weatherRes.data.daily.temperature_2m_min;
-    const codes = weatherRes.data.daily.weathercode;
+    const numDays = Math.min(5, dates.length, maxTemps.length || dates.length, minTemps.length || dates.length, codes.length || dates.length);
+    const forecast = dates.slice(0, numDays).map((d, i) => ({
+      date: d,
+      max: maxTemps[i] ?? null,
+      min: minTemps[i] ?? null,
+      code: codes[i] ?? null
+    }));
 
-    for (let i = 0; i < 5; i++) {
-      forecast.push({
-        date: dates[i],
-        max: maxTemps[i],
-        min: minTemps[i],
-        code: codes[i]
-      });
+    const current = weatherRes.data.current_weather || {};
+    const nowHour = new Date().getHours();
+    const hourly = weatherRes.data.hourly || {};
+    const humidityArr = Array.isArray(hourly.relative_humidity_2m) ? hourly.relative_humidity_2m : [];
+    const rainArr = Array.isArray(hourly.precipitation_probability) ? hourly.precipitation_probability : [];
+
+    let humidity = null;
+    let rainProb = null;
+    if (humidityArr.length > 0) {
+      if (Array.isArray(hourly.time)) {
+        const now = new Date();
+        const idx = hourly.time.findIndex(t => {
+          const dt = new Date(t);
+          return dt.getHours() === now.getHours() && dt.getDate() === now.getDate();
+        });
+        const usedIndex = idx >= 0 ? idx : Math.min(nowHour, humidityArr.length - 1);
+        humidity = humidityArr[usedIndex];
+      } else {
+        humidity = humidityArr[Math.min(nowHour, humidityArr.length - 1)];
+      }
+    }
+    if (rainArr.length > 0) {
+      rainProb = rainArr[Math.min(nowHour, rainArr.length - 1)];
     }
 
     let condition = 'Clear';
@@ -63,7 +82,7 @@ app.post('/api/weather', async (req, res) => {
     else if (code >= 95) condition = 'Thunderstorm';
 
     return res.json({
-      temp: current.temperature,
+      temp: current.temperature ?? null,
       condition,
       humidity,
       rainProb,
@@ -71,7 +90,7 @@ app.post('/api/weather', async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Error:', err.message);
+    console.error('Error:', err.response?.data || err.message);
     return res.status(500).json({ error: 'Unable to fetch weather' });
   }
 });
@@ -79,3 +98,4 @@ app.post('/api/weather', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
 });
+
