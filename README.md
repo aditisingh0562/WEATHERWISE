@@ -1,11 +1,11 @@
-# 🌤️ WeatherWise
+#  WeatherWise
 
 WeatherWise is a simple Node.js-based weather tracking app that fetches real-time weather data from an external API and displays it to users in a clean, minimal interface.  
 Built with **Express**, **Axios**, and **Dotenv**.
 
 ---
 
-## 🚀 Features
+##  Features
 
 - Fetch real-time weather data using an API (e.g., OpenWeatherMap or WeatherAPI)
 - Display temperature, humidity, and weather conditions
@@ -15,7 +15,7 @@ Built with **Express**, **Axios**, and **Dotenv**.
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Technology | Purpose |
 |-------------|----------|
@@ -26,7 +26,7 @@ Built with **Express**, **Axios**, and **Dotenv**.
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 weatherwise/
 ├── .vscode/
@@ -50,7 +50,7 @@ weatherwise/
 
 ---
 
-## ⚙️ Installation & Setup
+##  Installation & Setup
 
 1. **Clone the repository**
    ```bash
